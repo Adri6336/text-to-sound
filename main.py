@@ -61,8 +61,12 @@ if __name__ == '__main__':
     # Play sound 
     s = Session()
     clarinet = s.new_part('clarinet')
+    violin = s.new_part('violin')
     s.start_transcribing()
-    for pitch in numbers:
-        clarinet.play_note(pitch, 1, .1)
+    for x, pitch in enumerate(numbers):
+        if x % 2:
+            clarinet.play_note(pitch, 1, .2)
+        else:
+            violin.play_note(pitch, 1, .2)
     s.wait(1)
-    s.stop_transcribing().to_score().show()
+    s.stop_transcribing().to_score(title='Message In a Composition').show()
