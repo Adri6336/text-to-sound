@@ -3,7 +3,7 @@ from scamp import *
 from os import path
 from sys import argv
 from sys import exit
-
+from hashlib import sha256
 
 def listToString(targetList):
     string = ''
@@ -58,6 +58,18 @@ if __name__ == '__main__':
     else:
         numbers = workWithFile()
         
+    # Get sha256 hash for title
+    content = ''
+    for num in numbers:
+        content += str(num)
+
+    shaHash = sha256(bytes(content, 'utf-8')).hexdigest()
+    half = int(len(shaHash) / 2)
+    hex1 = shaHash[0:half]
+    hex2 = shaHash[half:]
+    
+    print(f'[i] Content: {content}\n[i] SHA256 digest: {hex1 + hex2}')
+
     # Play sound 
     s = Session()
     clarinet = s.new_part('clarinet')
@@ -69,4 +81,4 @@ if __name__ == '__main__':
         else:
             violin.play_note(pitch, 1, .2)
     s.wait(1)
-    s.stop_transcribing().to_score(title='Message In a Composition').show()
+    s.stop_transcribing().to_score(title=hex1, composer=hex2).show()
