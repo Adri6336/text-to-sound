@@ -86,4 +86,4 @@ if __name__ == '__main__':
     
     recording.to_score(title=hex1, composer=hex2).show()  # This will open the performance's pdf sheet music
     recording.to_score(title=hex1, composer=hex2).export_music_xml(f'ciphText-{shaHash[-4:]}.musicxml')
-    
+    recording.to_score(title=hex1, composer=hex2).export_pdf(f'ciphText-{shaHash[-4:]}.pdf')
