@@ -51,7 +51,7 @@ def workWithFile():
 if __name__ == '__main__':
     
     # Get pitch
-    if len(argv) > 1:
+    if len(argv) > 1:  # Different ways to get the same output
         
         numbers = workWithArgs()
         
@@ -60,8 +60,8 @@ if __name__ == '__main__':
         
     # Get sha256 hash for title
     content = ''
-    for num in numbers:
-        content += str(num)
+    for num in numbers:  # Grab the list of ordinal char values
+        content += str(num)  # Create a single string of numbers
 
     shaHash = sha256(bytes(content, 'utf-8')).hexdigest()
     half = int(len(shaHash) / 2)
@@ -74,11 +74,16 @@ if __name__ == '__main__':
     s = Session()
     clarinet = s.new_part('clarinet')
     violin = s.new_part('violin')
-    s.start_transcribing()
+    
+    s.start_transcribing()  # This will record the performance as it's played
     for x, pitch in enumerate(numbers):
         if x % 2:
             clarinet.play_note(pitch, 1, .2)
         else:
             violin.play_note(pitch, 1, .2)
     s.wait(1)
-    s.stop_transcribing().to_score(title=hex1, composer=hex2).show()
+    recording = s.stop_transcribing()
+    
+    recording.to_score(title=hex1, composer=hex2).show()  # This will open the performance's pdf sheet music
+    recording.to_score(title=hex1, composer=hex2).export_music_xml(f'ciphText-{shaHash[-4:]}.musicxml')
+    
